@@ -1,11 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+all_menu = [{'id': 1, 'name': 'one'}, {'id': 1, 'name': 'one'}]
+
+
+def login(request):
+    return render(request, 'login.html', {})
+
 
 def index(request):
-    name = "peerapong"
-    age = 28
-    return render(request, 'index.html', {"name": name,"age":age})
+    context = {'menus': all_menu}
+    return render(request, 'index.html', context )
 
 
 def about(request):
