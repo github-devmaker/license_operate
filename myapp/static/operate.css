@@ -1,0 +1,102 @@
+table {
+    width: 100%;
+}
+.hidden {
+    display: none;
+}
+
+html,body,table {
+    height: 100%;
+}
+
+tbody th, tbody td {
+    /* border: 1px solid black !important; 
+    border-collapse: collapse; */
+}
+tbody td {
+    vertical-align: top;
+    text-align: center;
+}
+tbody img {
+    /* filter: blur(1px); */
+}
+table tbody td {
+    width: 33%;
+}
+table img {
+    width: 115px;
+    height: 125px;
+    /* border-radius: 50%; */
+    border-radius: 4px;
+}
+body {
+    color:rgb(204, 204, 220) !important;
+    background: #181b1f !important;
+}
+.d-flex {
+    display: flex!important;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+tbody td {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+tbody  tr:last-child  td {
+    padding-top: 16px;
+}
+.item {
+    border-radius: 8px;
+    gap: 8px;
+    /* padding: 10% 15% 15% 15%; */
+    /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.item:hover {
+    cursor: pointer;
+    box-shadow: rgba(108, 202, 243, 0.4) 0px 5px, rgba(240, 46, 170, 0.3) 0px 10px, rgba(240, 46, 170, 0.2) 0px 15px, rgba(240, 46, 170, 0.1) 0px 20px, rgba(240, 46, 170, 0.05) 0px 25px;
+}
+.stName {
+    color:rgb(87, 148, 242);
+    font-weight: 500;
+}
+thead tr td {
+    cursor: pointer;
+    text-align: center;
+}
+
+
+body.modal-open .modal {
+    display: flex !important;
+    height: 100%;
+} 
+
+body.modal-open .modal .modal-dialog {
+    margin: auto;
+    width: 80%;
+}
+
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.grid-license-list {
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+
+.numberCircle {
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    padding: 8px;
+    background: #fff;
+    border: 2px solid #666;
+    color: #666;
+    text-align: center;
+    font: 32px Arial, sans-serif;
+}

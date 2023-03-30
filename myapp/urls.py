@@ -5,5 +5,8 @@ urlpatterns = [
     path('', views.index), 
     path('about', views.about),
     path('login',views.login),
-    path('license/<string:username>',views.license, name='license')
+    path('getItems',views.getItems,name='getItems'),
+    path('renderPage',views.renderPage,name='renderPage'),
+    path('license_manage',views.license_manage),
+    path('addLicense',views.addLicense,name='addLicense'),
     ]
