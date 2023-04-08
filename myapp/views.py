@@ -3,44 +3,102 @@ from django.http import HttpResponse, JsonResponse
 import serial.tools.list_ports
 import time
 import threading
-lines = [1,2,3,4,5,6,7,8]
+from django.template import context, loader
+import json
+import random
+import requests
+import datetime
+lines = [1, 2, 3, 4, 5, 6, 7, 8]
 all_menu = [{'id': 1, 'name': 'one'}, {'id': 1, 'name': 'one'}]
 items = 0
 tempText = ''
 ser = serial.Serial()
+headers = {'Content-type': 'application/json;charset=utf-8'}
+baseUrlApi = 'http://localhost:5008/'
 def getItems(request):
     global tempText
     global items
-    return JsonResponse({"message":tempText,'item':items},status=200)
+    return JsonResponse({"message": tempText, 'item': items}, status=200)
+
 
 def thread_callback():
-        while True:
-            global items
-            items = items + 1
-            print( '----------- ' + str(items))
-            time.sleep(1)
+    while True:
+        global items
+        items = items + 1
+        print('----------- ' + str(items))
+        time.sleep(1)
+
 
 def index(request):
     global items
     global lines
-    context = {'menus': all_menu,'item':items,'lines':lines}
+    context = {'menus': all_menu, 'item': items, 'lines': lines}
     return render(request, 'index.html', context)
+
 
 def login(request):
     uname = request.method.GET['uname']
     pws = request.method.GET['pwd']
     return render(request, 'login.html', {'uname': uname, 'pwd': pws})
 
+
 def about(request):
     return HttpResponse('<h1>About</1>')
-def license_manage(request):
-    context = { 'name':'Peerapong','render':'old render'}
-    return render(request,'license_manage.html',context)
+
+
+def license(request):
+    return render(request, 'license.html')
+def license_main(request):
+        return render(request,'license/main.html',{})
+
+def station(request):
+    context = {'name': 'Peerapong', 'render': 'old render'}
+    return render(request, 'station.html', context)
+
+
 def renderPage(request):
-    context = { 'name':'Peerapong','render':'old render  111'}
+    context = {'name': 'Peerapong', 'render': 'old render  111'}
     return JsonResponse(context)
+
+
 def addLicense(request):
     return JsonResponse(request)
+
+def ajaxPost(url,json):
+    r = requests.post(url = baseUrlApi + url,headers=headers,json = json)
+    if(r.status_code == 200): 
+        return r.json()
+    return 
+
+def manageUserOfLicense(request):
+    return render(request,'')
+
+def ModalManageUserOfLicense(request):
+    return render(request,'modals/manage_user_of_license.html',{ 'effective' : str(datetime.date.today()),'expired':str(datetime.date.today())})
+
+def ModelStationLicense(request):
+    try:
+        stCode = request.POST['stCode']
+        r = ajaxPost('dict/get',{ 'Type': 'STATION', 'Code': stCode })
+        rLicense = ajaxPost('dict/get',{'Type':'LICENSE'})
+        if(r == None or len(r['data']) == 0):
+            return render(request,'404.html',{})
+        else:
+            licenses = rLicense['data'] if len(rLicense['data']) else []
+            return render(request,'modals/license_station.html',{ 'items' : r['data'][0],'licenses': licenses})
+    except Exception as inst:
+        print(inst)
+
+def initItem(request):
+    content = request.POST['items']
+    content = json.loads(content)
+    for item in content:
+        for license in item['licenses']:
+            license['expDate'] = license['expDate'][0:10] if license['expDate'] != None else 'DD-MM-YYYY'
+            # license['expDate'] = datetime.datetime.strptime(str(license['expDate'])[0:10],'%Y-%m-%d').strftime('%m/%d/%y')
+            # license['expDate'] = datetime.datetime.strptime("2013-1-25", '%Y-%m-%d').strftime('%m/%d/%y')
+    return render(request, 'item.html', { 'items': content,'api':baseUrlApi})
+
 # def setupReadCard(port='COM5',baudrate=9000):
 #     global ser
 #     port = 'COM5'
@@ -56,6 +114,7 @@ def addLicense(request):
 #         ser.open()
 #     else:
 #         print('dis connect port !!!')
+
 
 def readCard():
     # global ser
@@ -125,7 +184,8 @@ def readCard():
         buffText = ''
         if len(list(brf5)) >= 7:
             # print(type(brf5[3]))
-            if (int(brf5[3]) >= int(48) and int(brf5[3]) <= int(57)) or (int(brf5[3]) >= int(73) and int(brf5[3]) <= int(90)):
+            if (int(brf5[3]) >= int(48) and int(brf5[3]) <= int(57)) or (
+                    int(brf5[3]) >= int(73) and int(brf5[3]) <= int(90)):
                 idx = 0
                 for item in brf5:
                     if int(idx) >= int(3) and int(idx) <= int(7):
@@ -137,9 +197,12 @@ def readCard():
         else:
             tempText = ''
 
+
 def seleccion(request):
-    context = {'menus': all_menu,'item':items,'lines':lines}
-    return render(request,'index.html',context)
+    context = {'menus': all_menu, 'item': items, 'lines': lines}
+    return render(request, 'index.html', context)
+
+
 # setupReadCard()
 # readCard()
 thr = threading.Thread(target=readCard)

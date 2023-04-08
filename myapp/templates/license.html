@@ -1,0 +1,104 @@
+{% load static %}
+{% csrf_token %}
+<!DOCTYPE html>
+<html lang="en">
+
+<link>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block main %}
+{% include "main.html" %}
+{% endblock %}
+<script src="{% static '/js/index.js' %}"></script>
+<script src="{% static '/js/license_manage.js' %}"></script>
+<link href="{% static 'license_manage.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'index.css' %}">
+<title>License Management</title>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" onclick="openNav();">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a href="" class="navbar-brand">LICENSE MANAGMENT</a>
+            <a href="/" class="btn btn-primary"><i class="fa-solid fa-tv"></i>&nbsp;&nbsp;Monitor Operate</a>
+        </div>
+    </nav>
+    <div class="collapse" id="navbarToggleExternalContent">
+        <div class="bg-dark p-4">
+            <h5 class="text-white h4">Collapsed content</h5>
+            <span class="text-muted">Toggleable via the navbar brand.</span>
+        </div>
+    </div>
+    <div class="container-fluid px-3 py-3">
+        <div class="row">
+            <div class="row">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">LICENSE</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">MANAGEMENT</li>
+                        </ol>
+                    </nav>
+                    <div class="container-group-button">
+                        <p><i class="fa-solid fa-star-half-stroke"></i>&nbsp;&nbsp;License List</p>
+                        <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal"
+                            data-bs-target="#modalAddLicense" style="height: fit-content;"><i
+                                class="fa-solid fa-gear"></i>&nbsp;&nbsp;Add License</button>
+                    </div>
+                    <table class="table table-bordered table-striped table-dark" id="tbLicense">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<div class="modal fade" id="modalAddLicense" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleId">Add License</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="needs-validation" novalidate>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">License Name</label>
+                                        <input type="text" class="form-control"
+                                            placeholder="Enter License Name Please ..." id="licenseName">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="$(this).addLicense()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block foo %}
+{% include "nav_menu.html" %}
+{% endblock %}

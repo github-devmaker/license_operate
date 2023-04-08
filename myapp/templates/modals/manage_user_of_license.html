@@ -1,0 +1,66 @@
+<div class="divider "></div>
+<div class="row p-3">
+    <input type="hidden" id="licenseCode" value="{{ licenseCode }}">
+    <div class="col-12">
+        <div class="mb-4">
+            <h2  id="licenseDetail" class="c-blue"></h2>
+        </div>
+    </div>
+    <div >
+        <div class="col-12">
+            <div class="input-group input-group-md mb-1">
+                <label class="input-group-text"><i class="fa fa-user"></i></label>
+                <input type="number" id="emCode" class="form-control" placeholder="Enter Employee number ...">
+                <label class="form-label btn btn-primary mb-0" id="searchEm"><i
+                        class="fa fa-search"></i>&nbsp;&nbsp;Search</label>
+            </div>
+            <span class="c-green hidden" id="user-can-use">- This employee number can be used</span>
+            <span class="c-red hidden" id="user-dont-can-use">- Invalid employee number.</span>
+        </div>
+        <div class="col-12 mt-2">
+            <div class="row">
+                <div class="col-6">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon2">Effective</span>
+                        <input type="date" id="effective" class="form-control" placeholder="Recipient's username"
+                            aria-label="Recipient's username" value="{{ effective }}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon2">Expired</span>
+                        <input type="date" id="expired" class="form-control" placeholder="Recipient's username"
+                            aria-label="Recipient's username" value="{{ expired }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).on('click', '#searchEm', function () {
+        var modal = $(this).closest('.jconfirm');
+        var emCode = modal.find('#emCode').val();
+        $.get({ url: baseUrlApi + '/HRM/employee/' + emCode }).done(function (data) {
+            if (typeof (data) != 'undefined' && Object.keys(data).length) {
+                modal.find('#user-dont-can-use').addClass('hidden');
+                modal.find('#user-can-use').removeClass('hidden');
+            }else{
+                modal.find('#user-can-use').addClass('hidden');
+                modal.find('#user-dont-can-use').removeClass('hidden');
+            }
+        }).fail(function(){
+            modal.find('#user-dont-can-use').addClass('hidden');
+            modal.find('#user-can-use').addClass('hidden');
+        })
+    });
+
+    $(document).on('change','#effective,#expired',function(){
+        let effective = $('#effective');
+        let expired = $('#expired');
+        // if(){
+
+        // }
+    })
+</script>

@@ -1,0 +1,184 @@
+{% load static %}
+{% csrf_token %}
+<!DOCTYPE html>
+<html lang="en">
+
+<link>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block main %}
+    {% include "main.html" %}
+{% endblock %}
+<script src="{% static '/js/index.js' %}"></script>
+<script src="{% static '/js/license_manage.js' %}"></script>
+<link href="{% static 'license_manage.css' %}" rel="stylesheet">
+<link href="{% static 'index.css' %}" rel="stylesheet" >
+
+<title>Station Management</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" onclick="openNav();">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a href="" class="navbar-brand">STATION MANAGEMENT</a>
+            <a href="/" class="btn btn-primary"><i class="fa-solid fa-tv"></i>&nbsp;&nbsp;Monitor Operate</a>
+        </div>
+    </nav>
+    <div class="container-fluid p-3">
+        <div class="row">
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex justify-content-between">
+                        <p><i class="fa-solid fa-route"></i>&nbsp;&nbsp;Station Router</p>
+                        <button class="btn btn-primary btn-sm" style="height: fit-content;" data-bs-toggle="modal"
+                            data-bs-target="#modalSettingRouter"><i
+                                class="fa-solid fa-gear"></i>&nbsp;&nbsp;Add Station</button>
+                    </div>
+                    <table class="table table-bordered table-striped table-dark" id="tbStation">
+                        <tbody>
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<div class="modal fade" id="modalSettingRouter" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleId">Setting Router</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Factory</label>
+                                <select name="" id="fac" class="form-select" onchange="getLine(this.value)"></select>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Line</label>
+                                <select name="" id="line" class="form-select"
+                                    onchange="getStation(this.value)"></select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <label class="form-label">Station List </label>
+                                            <table class="table table-bordered table-striped" id="tbRouterStation">
+                                                <tbody>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <form action="">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Station Name</label>
+                                                    <input type="text" class="form-control"
+                                                        placeholder="Enter Station Name Please ..." id="stName">
+                                                    <div id="emailHelp" class="form-text">System Genarate Code Automatic
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <a href="#" id="btnAddSt" class="btn btn-primary"
+                                                onclick="$(this).addStation()">Add
+                                                Station</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block foo %}
+   {% include "nav_menu.html" %}
+{% endblock %}
+
+<!-- Modal Body -->
+<!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+<div class="modal fade" id="modalLicOfSt" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleId">Setting Station</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <input type="hidden" id="stCode" value="">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Code</label>
+                                <input type="text" class="form-control" id="code" readonly disabled="disabled">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="desc" readonly disabled="disabled">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="input-group input-group-md mb-3">
+                                <label class="input-group-text">License</label>
+                                <select class="form-select" name="" id="listLicense">
+                                </select>
+                                <label for="" class="form-label btn btn-primary mb-0" onclick="$(this).addLicToSt()"><i
+                                        class="fa fa-plus"></i>&nbsp;&nbsp;Add License</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <table class="table table-bordered" id="tbStationSetting">
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Names</th>
+                                        <th>#</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

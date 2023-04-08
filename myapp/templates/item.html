@@ -1,0 +1,84 @@
+<input type="hidden" id="api" value="{{ api }}">
+{% for item in items %}
+<div class="item">
+    <input type="hidden" value="{{item.code}}" id="code">
+    <input type="hidden" id="checkin" value="{{item.emcode}}">
+    <div class="stName">{{item.stName}}</div>
+    <div class="user-detail mt-3" style="display: flex;">
+        <div class="tag-img">
+            <img src="http://dcidmc.dci.daikin.co.jp/PICTURE/{{ item.emcode }}.JPG" alt="">
+        </div>
+        <div class="details">
+            <div class="name">{{ item.name}}</div>
+            <div class="working-age"><span>WORK AGE : </span><span class="c-yellow">{{item.wage}}</span></div>
+            <div class="position"><span>POSITION : </span><span class="c-green">{{item.pst}}</span></div>
+        </div>
+    </div>
+    <div class="row mt-3">
+
+        <div class="col-12" id="group-license">
+            {% for license in item.licenses %}
+            <div class="item-license">
+                <input type="hidden" id="licenseCode" value="{{ license.refCode }}"> 
+                {% if license.expDate != None and license.expDate != 'DD-MM-YYYY' %}
+                <div class="flex-middle">
+                    <span class="label-green" id="status"></span>
+                </div>
+                {% endif %}
+                <div><b>{{ license.desc }}</b><br><b class="c-green" id="date">{{ license.expDate }}</b></div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-12 mt-3">
+            <div class="NGOK">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td>DAILY</td>
+                            <td>ACCUMULATE</td>
+                        </tr>
+                        <tr>
+                            <td class="c-bold c-green">OK</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td class="c-bold c-red">NG</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<!-- <script>
+    let el = null;
+    let licenseCode = null;
+    let emCode = null;
+    $('.grid-container .item').filter(function(){
+        el = $(this);
+        emCode = el.find('#api').val();
+        
+        licenseCode = el.find('#refCode').val();
+        console.log(licenseCode,emCode);
+        $.post({
+                    url: baseUrlApi + '/license/user',
+                    data: JSON.stringify({ code: data[index]['user'][0]['code'], refCode: valLicense['refCode'] }), contentType: appjson
+                }).done(function (res) {
+                    console.log(res)
+                    var licenseItem = $('#group-license .item-license').eq(indexLicense-1);
+                    if(res === undefined){
+                        licenseItem.find('#date').text('DD-MM-YYYY');
+                        licenseItem.find('#status').removeClass('card-green').addClass('card-red');
+                    }else{
+                        licenseItem.find('#date').text(moment(res.expiredDate).format('DD-MM-YYYY'));
+                        licenseItem.find('#status').removeClass('card-red').addClass('card-green');
+                    }
+
+                });
+    })
+</script> -->

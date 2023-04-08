@@ -1,5 +1,6 @@
 {% load static %}
 {% load bootstrap_icons %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,168 +8,86 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="{% static '/jquery.min.js' %}"></script>
+  {% block main %}
+  {% include "main.html" %}
+  {% endblock %}
   <script src="{% static '/js/index.js' %}"></script>
+  <link href="{% static 'index.css' %}" rel="stylesheet">
   <link href="{% static 'operate.css' %}" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="{% static 'fontawesome/js/all.min.js' %}"></script>
-  <link  href="{% static 'fontawesome/css/all.min.css' %}" rel="stylesheet" type="text/css">
   <title>Document</title>
 </head>
 
 <body>
-  {% block content %}
-  <div class="container hidden">
-    <span id="count"></span>
-    <h1>{{ item }}</h1>
-    <table>
-      {% for menu in menus %}
-      <tr>
-        <td>{{ menu.id }}</td>
-      </tr>
-      {% endfor %}
-    </table>
-    <button type="button" onclick="getCount()">fetch data</button>
+  {% csrf_token %}
+  <div class="grid-toolbar">
+    <div class = "time-toolbar">
+      <span>2023-01-01</span>
+      <span>09:00:00</span>
+    </div>
+    <h1 id="titleBar">TITLE BAR</h1>
+    <a href="/station">go to manage</a>
   </div>
-
-  <table class="tb-grid-6">
-    <thead>
-      <tr>
-        <td colspan="3" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          <h1>FAC : ONE</h1>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="4">
-          <h1>LINE : ONE</h1>
-          <a href="/license_manage">go to manage</a>
-          <!-- <select>
-              {% for line in lines %}
-              <option value="{{ line }}">{{ line }}</option>
-              {% endfor %}
-            </select> -->
-        </td>
-      </tr>
-    </thead>
-    <tbody>
-      {% for _ in ''|center:2 %}
-      <tr class="">
-        {% for _ in ''|center:3 %}
-        <td>
-          <div class="item ">
-            <span class="stName">Station Name</span><br>
-            <div class="grid-container">
-              <div class="grid-item">
-                <img src="http://dcidmc.dci.daikin.co.jp/PICTURE/41256.JPG" style="float:left">
-              </div>
-              <div class="grid-item">
-                <span class="opName">MR.PEERAPONG KIADTIPONGWIRIYA</span>
-                <span class="wkAge">WORKING AGE : XXX</span>
-                <span class="expDate">Exp.Date : XX-XX-XXXX</span>
-              </div>
-            </div>
-
-            <div>
-              <div class="grid-license-list">
-                <div class="grid-license-item">1</div>
-                <div class="grid-license-item">License 1</div>
-                <div class="grid-license-item">Success</div>
-                <div class="grid-license-item">2</div>
-                <div class="grid-license-item">License 2</div>
-                <div class="grid-license-item">Success</div>
-                <div class="grid-license-item">3</div>
-                <div class="grid-license-item">License 3</div>
-                <div class="grid-license-item">Success</div>
-              </div>
-            </div>
-
-            <table>
-              <tbody>
-                <tr>
-                  <td></td>
-                  <td>DAILY</td>
-                  <td>ACCUMULATE</td>
-                </tr>
-                <tr>
-                  <td>OK</td>
-                  <td>0</td>
-                  <td>0</td>
-                </tr>
-                <tr>
-                  <td>Brazing Leak</td>
-                  <td>0</td>
-                  <td>0</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </td>
-        {% endfor %}
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  {% endblock %}
-
-
+  <div class="grid-container grid-3fr"></div>
 </body>
-
 </html>
+<button type="button" id="btnSelectLocation" class="btn btn-primary btn-lg" data-bs-toggle="modal"
+  data-bs-target="#modalLocation">
+  Launch
+</button>
 
-
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade in" id="modalLocation" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+  role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="modalTitleId">Select Location ?</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form action=""></form>
+        <form action="">
+          <div class="row">
+            <div class="col-6">
+              <div class="mb-3">
+                <label for="" class="form-label">Factory</label>
+                <select name="" id="fac" class="form-select" onchange="setLine($('#line'))"></select>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="mb-3">
+                <label for="" class="form-label">Line</label>
+                <select name="" id="line" class="form-select"></select>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-primary" onclick="selectLocation()">Save</button>
       </div>
     </div>
   </div>
 </div>
 
-<form action="/seleccion" method="POST">
-  {% csrf_token %}
-  <div>
-      <select id="carrera" name="Carrera">
-          <option value="1">TICS</option>
-          <option value="2">Carrera</option>
-          <option value="3">Carrera</option>
-          <option value="4">Carrera</option>
-          <option value="5">Carrera</option>
-      </select>
+
+
+<div class="modal fade in" id="modalTabCard" tabindex="-1" aria-labelledby="modalTabCardLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <form id="formTabCard">
+          <input type="text" id="cardNumber" value="41256">
+          <input type="hidden" id="refCode" value="">
+          <h2>CHECK IN</h2>
+          <img id="img" src="" style="width:80px;height: 100px;">
+          <p id = "name">-</p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" id="conCard" value="41256">Con Card</button>
+        <button type="button" class="btn btn-danger" id="disCard">Dis Card</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="setDetailTabCard()">Close</button>
+        <button type="button" class="btn btn-primary" id="checkinout" state = "in" disabled = "disabled">Confirm</button>
+      </div>
+    </div>
   </div>
-
-  <div>
-      <select id="Alumno" name="Nombre">
-
-          {% if alumno|length > 1 %}
-          {% for alumno in alumno %}
-          <option value="{{alumno.idAlumnos}}">{{alumno.nombre}}</option>
-          {% endfor %}
-          {% else %}
-          <option value="{{alumno.idAlumnos}}">{{alumno.nombre}}</option>
-          {%endif%}
-
-          <input type="submit" name="Seleccionar">
-
-      </select>
-  </div>
-  <label for="ID">ID</label>
-  <input type="input" name="id" disabled value="{{alumno.idAlumnos}}"><br>
-  <label for="apellidos">Apellidos</label>
-  <input type="input" name="apellidos" disabled value="{{alumno.apellidos}}"><br>
-  <label for="Correo">Correo</label>
-  <input type="input" name="Correo" disabled value="{{alumno.correo}}"><br>
-
-</form>
+</div>
